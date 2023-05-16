@@ -37,7 +37,14 @@ bool seq_list_extension(seq_list &l){
         l.block[i] = 0;
     };
     return true;
-}
+};
+
+bool seq_list_short(seq_list &l){
+    int* last_block = l.block;
+    l.block = (int*)malloc(sizeof(int) * (l.max - INIT_SIZE));
+    l.max -= INIT_SIZE;
+    return true;
+};
 
 bool seq_list_insert(seq_list &l, int index, int value){
    
@@ -55,22 +62,38 @@ bool seq_list_insert(seq_list &l, int index, int value){
     else{
         throw "INDEX EXCEPTION";
     };
-}
+};
 
 bool seq_list_pop(seq_list l, int index){
     for(int i = index; i < l.len-1; i++){
         l.block[i] = l.block[i+1];
-    }
-}
+        l.len -= 1;
+    };
+    if(l.len <= l.max - INIT_SIZE){
+        //缩短
+        seq_list_short(l);
+
+    };
+    return true;
+};
 
 int seq_list_index(seq_list l, int value){
     for(int i = 0; i < l.len; i++){
         if(l.block[i] == value){
             return i;
         };
-        return -1;
+    };
+    return -1;
+};
+
+int seq_get_value(seq_list &l, int index){
+    if(index >= 0 && index < l.len){
+        return l.block[index];
     }
-}
+    else{
+        throw "INDEX EXCEPTION";
+    };
+};
 
 int main(){
     seq_list list;
