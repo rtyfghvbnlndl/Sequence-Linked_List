@@ -2,6 +2,8 @@
 #include <stdlib.h>
 using namespace std;
 
+//单链表，无头结点
+
 typedef struct node{
     node* next_node;
     int value;

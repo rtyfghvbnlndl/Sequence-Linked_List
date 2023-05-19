@@ -2,8 +2,9 @@
 #include <stdlib.h>
 using namespace std;
 
-#define INIT_SIZE 6
+//顺序表
 
+#define INIT_SIZE 6
 typedef struct{
     int max;
     int len;
