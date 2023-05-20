@@ -96,6 +96,13 @@ int seq_get_value(seq_list l, int index){
        throw invalid_argument("Index Erro");
     }
 }
+
+void seq_distroy(seq_list &l){
+    l.len = 0;
+    l.max = 0;
+    free(l.block);
+}
+
 int main(){
     //init
     seq_list list;

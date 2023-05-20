@@ -4,20 +4,20 @@ using namespace std;
 
 //双链表，有头结点，不循环，index从0开始
 
-typedef struct node{
+typedef struct dnode{
     int value;
-    node* prior;
-    node* next;
-} node, *linked_list;
+    dnode* prior;
+    dnode* next;
+} dnode, *double_linked_list;
 
-void linked_list_init(linked_list &l){
-    l = (node*)malloc(sizeof(node));
+void double_linked_list_init(double_linked_list &l){
+    l = (dnode*)malloc(sizeof(dnode));
     l->next = NULL;
     l->prior = NULL;
     l->value = 0;
 }
 
-void insert_next_node(node* &p, node* &s){
+void insert_next_dnode(dnode* &p, dnode* &s){
     s->next = p->next;
     if(p->next != NULL){
         p->next->prior = s;
@@ -26,15 +26,15 @@ void insert_next_node(node* &p, node* &s){
     p->next = s;
 }
 
-bool linked_list_insert(linked_list &l, int index, int value){
+bool double_linked_list_insert(double_linked_list &l, int index, int value){
     int current_index = -1;
-    node* p = l;
+    dnode* p = l;
     while(p != NULL){
         if(current_index + 1 == index){
-            node* s = (node*)malloc(sizeof(node));
+            dnode* s = (dnode*)malloc(sizeof(dnode));
             s->value = value;
             //插入到下一个节点
-            insert_next_node(p, s);
+            insert_next_dnode(p, s);
             return true;  
         }
         p = p->next;
@@ -43,9 +43,9 @@ bool linked_list_insert(linked_list &l, int index, int value){
     throw invalid_argument("Index Erro");
 }
 
-int linked_list_read_value(linked_list l, int index){
+int double_linked_list_read_value(double_linked_list l, int index){
     int current_index = 0;
-    node* d = l->next;
+    dnode* d = l->next;
     while(d != NULL){
         if(current_index == index){
             return d->value;
@@ -56,8 +56,8 @@ int linked_list_read_value(linked_list l, int index){
     throw invalid_argument("Index Erro");
 }
 
-void del_next_node(node* &p){
-    node* d = p->next;
+void del_next_dnode(dnode* &p){
+    dnode* d = p->next;
 
     p->next = d->next;
     if(d->next != NULL){
@@ -66,13 +66,13 @@ void del_next_node(node* &p){
     free(d);
 }
 
-bool linked_list_pop(linked_list &l, int index){
+bool double_linked_list_pop(double_linked_list &l, int index){
     int current_index = -1;
-    node* p = l;
+    dnode* p = l;
     while(p != NULL){
         if(current_index + 1 ==index){
             //删除后一个节点
-            del_next_node(p);
+            del_next_dnode(p);
             return true;
         }
         current_index += 1;
@@ -81,9 +81,9 @@ bool linked_list_pop(linked_list &l, int index){
     throw invalid_argument("Index Erro");
 }
 
-int linked_list_index(linked_list l, int value){
+int double_linked_list_index(double_linked_list l, int value){
     int current_index = 0;
-    node* d = l->next;
+    dnode* d = l->next;
     while(d != NULL){
         if(d->value == value){
             return current_index;
@@ -94,17 +94,28 @@ int linked_list_index(linked_list l, int value){
     throw invalid_argument("Value Erro");
 }
 
+void double_linked_list_destroy(double_linked_list &l){
+    dnode* d = l;
+    dnode* s;
+    while(d != NULL){
+        s = d;
+        d = d->next;
+        free(s);
+    }
+    l = NULL;
+}
+
 int main(){
-    linked_list a;
-    linked_list_init(a);
+    double_linked_list a;
+    double_linked_list_init(a);
     for(int i = 100; i < 2000; i += 100){
-        linked_list_insert(a, 0, i);
+        double_linked_list_insert(a, 0, i);
     }
     
-    linked_list_pop(a, 0);
-    cout << linked_list_read_value(a, 0) << endl;
+    double_linked_list_pop(a, 0);
+    cout << double_linked_list_read_value(a, 0) << endl;
 
-    cout << linked_list_index(a, 100) << endl;
+    cout << double_linked_list_index(a, 100) << endl;
     
 
     return 0;
